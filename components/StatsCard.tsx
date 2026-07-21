@@ -1,5 +1,21 @@
-const StatsCard = () => {
-  return <div>StatsCard</div>;
+import { calculateTrendPercentage } from "../lib/utils";
+
+const StatsCard = ({
+  headerTitle,
+  total,
+  lastMonthCount,
+  currentMonthCount,
+}: StatsCard) => {
+  let { trend, percentage } = calculateTrendPercentage(
+    currentMonthCount,
+    lastMonthCount,
+  );
+  const isDecrement = (trend = "decrement");
+  return (
+    <article className="stats-card">
+      <h3 className="text-base font-medium">{headerTitle}</h3>
+    </article>
+  );
 };
 
 export default StatsCard;

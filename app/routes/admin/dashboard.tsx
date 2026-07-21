@@ -27,7 +27,7 @@ const dashboard = () => {
             lastMonth={usersJoined.lastMonth}
           />
           <StatsCard
-            headerTitle="Total Users"
+            headerTitle="Active Users Today"
             total={totalTrips}
             currentMonth={tripsCreated.currentMonth}
             lastMonth={tripsCreated.lastMonth}
