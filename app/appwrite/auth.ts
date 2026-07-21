@@ -1,4 +1,4 @@
-import { OAuthProvider, Query } from "appwrite";
+import { ID, OAuthProvider, Query } from "appwrite";
 import { redirect } from "react-router";
 import { account, appwriteConfig, database } from "~/appwrite/client";
 
@@ -54,8 +54,29 @@ export const getGooglePicture = async (accessToken: string) => {
 
 export const storeUserData = async () => {
   try {
+    const user = await account.get();
+    if (!user) throw new Error("User not found");
+
+    const { providerAccessToken } = (await account.getSession("current")) || {};
+    const profilePicture = providerAccessToken
+      ? await getGooglePicture(providerAccessToken)
+      : null;
+
+    const createdUser = await database.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      ID.unique(),
+      {
+        accountId: user.$id,
+        email: user.email,
+        name: user.name,
+        imageUrl: profilePicture,
+        joinedAt: new Date().toISOString(),
+      },
+    );
+    if (!createdUser.$id) redirect("/sign-in");
   } catch (error) {
-    console.log(error);
+    console.log("storeUserData:", error);
   }
 };
 
