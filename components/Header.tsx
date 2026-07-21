@@ -23,7 +23,16 @@ const Header = ({ title, description }: Props) => {
         >
           {title}
         </h1>
-        <p>{description}</p>
+        <p
+          className={cn(
+            "text-gray-100 font-normal",
+            location.pathname === "/"
+              ? "text-base md:text-lg "
+              : "text-sm md:text-lg font-semibold",
+          )}
+        >
+          {description}
+        </p>
       </article>
     </header>
   );
