@@ -1,10 +1,16 @@
 import React from "react";
-import Header from "../../../components/Header";
+import { Header } from "../../../components";
 
 const dashboard = () => {
+  const user = {
+    name: "Brian",
+  };
   return (
     <main className="dashboard wrapper">
-      <Header />
+      <Header
+        title={`Welcome ${user?.name ?? "Guest"}👋`}
+        description="Track activity, trends and popular destinations in real time."
+      />
     </main>
   );
 };
