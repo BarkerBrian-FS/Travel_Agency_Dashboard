@@ -28,10 +28,12 @@ export const getUser = async () => {
     console.log("getUser", error);
   }
 };
+
 export const logoutUser = async () => {
   try {
+    await account.deleteSession("current");
   } catch (error) {
-    console.log(error);
+    console.log("logoutUser:", error);
   }
 };
 
@@ -45,7 +47,8 @@ export const getGooglePicture = async (accessToken: string) => {
     const { photos } = await response.json();
     return photos?.[0]?.url || null;
   } catch (error) {
-    console.log("getGooglePicture", error);
+    console.log("getGooglePicture:", error);
+    return null;
   }
 };
 
