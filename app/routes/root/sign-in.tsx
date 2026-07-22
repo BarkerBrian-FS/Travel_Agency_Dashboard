@@ -7,7 +7,7 @@ export async function clientLoader() {
   try {
     const user = await account.get();
 
-    if (!user.$id) redirect("/");
+    if (user.$id) redirect("/");
   } catch (error) {
     console.log("Error Loading", error);
   }
