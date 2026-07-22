@@ -64,8 +64,6 @@ async function handleRequest(
 
           responseHeaders.set("Content-Type", "text/html");
 
-          pipe(body);
-
           resolve(
             new Response(stream, {
               headers: responseHeaders,
