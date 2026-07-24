@@ -1,7 +1,6 @@
 import { Header } from "../../../components";
 import { ComboBoxComponent } from "@syncfusion/ej2-react-dropdowns";
 import {
-  Coordinate,
   LayerDirective,
   LayersDirective,
   MapsComponent,
@@ -12,10 +11,11 @@ import { cn, formatKey } from "../../../lib/utils";
 import { useState } from "react";
 import { world_map } from "~/constants/world_map";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
+import { account } from "~/appwrite/client";
 
 export const loader = async () => {
   const response = await fetch(
-    "https://api.restcountries.com/countries/v5?limit=100",
+    `https://api.restcountries.com/countries/v5?limit=100`,
     {
       headers: {
         Authorization: `Bearer ${process.env.REST_COUNTRIES_API_KEY}`,
@@ -72,12 +72,31 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
       !formData.travelStyle ||
       !formData.interest ||
       !formData.budget ||
-      !formData.groupType ||
-      !formData.duration
+      !formData.groupType
     ) {
       setError("Please provide values for all fields");
       setLoading(false);
       return;
+    }
+
+    if (formData.duration < 1 || formData.duration > 10) {
+      setError("Duration must be between 1 and 10 days");
+      setLoading(false);
+      return;
+    }
+    const user = await account.get();
+    if (!user.$id) {
+      console.error("User not authenticated");
+      setLoading(false);
+      return;
+    }
+    try {
+      console.log("user", user);
+      console.log("formData", formData);
+    } catch (error) {
+      console.error("Error generating trip", e);
+    } finally {
+      setLoading(false);
     }
   };
 
