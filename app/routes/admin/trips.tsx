@@ -1,14 +1,16 @@
-import Header from "../../../components/Header";
+import { Header } from "../../../components";
+import type { Route } from "./+types/trips";
 
 const Trips = () => {
-  <main className="all-users wrapper">
-    <Header
-      title="Trips"
-      description="View and edit travel plans"
-      ctaText="Create a Trip"
-      ctaUrl="/trips/create"
-    />
-  </main>;
+  return (
+    <main className="all-users wrapper">
+      <Header
+        title="Trips"
+        description="View and edit AI-generated travel plans"
+        ctaText="Create a trip"
+        ctaUrl="/trips/create"
+      />
+    </main>
+  );
 };
-
 export default Trips;
