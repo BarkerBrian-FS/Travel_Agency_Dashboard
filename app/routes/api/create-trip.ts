@@ -1,6 +1,8 @@
-import type { ActionFunctionArgs } from "react-router";
+import { data, type ActionFunctionArgs } from "react-router";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { parseMarkdownToJson } from "../../../lib/utils";
+import { appwriteConfig, database } from "~/appwrite/client";
+import { ID } from "appwrite";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const {
@@ -77,6 +79,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const imageUrls = (await imageResponse.json()).results
       .slice(0, 3)
       .map((results: any) => results.urls?.regular || null);
+
+    const result = await database.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.tripCollectionId,
+      ID.unique(),
+      {
+        tripDetail: JSON.stringify(trip),
+        createdAt: new Date().toISOString(),
+        imageUrls,
+        userId,
+      },
+    );
+    return data({ id: result.$id });
   } catch (error) {
     console.error("Error generating travel plan", error);
   }
