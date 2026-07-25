@@ -8,15 +8,26 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { tripId } = params;
   if (!tripId) throw new Error("Trip Id is required");
 
-  const trip = await getTripById(tripId);
-
-  return trip;
+  return await getTripById(tripId);
 };
 
 const TripDetail = ({ loaderData }: Route.ComponentProps) => {
-  const tripData = parseTripData(loaderData?.trip);
+  const tripData = parseTripData(loaderData?.tripDetail);
 
-  const name = tripData || {};
+  const {
+    name,
+    duration,
+    itinerary,
+    travelStyle,
+    groupType,
+    budget,
+    interests,
+    estimatedPrice,
+    description,
+    bestTimeToVisit,
+    weatherInfo,
+    country,
+  } = tripData || {};
 
   return (
     <main className="travel-detail wrapper">
