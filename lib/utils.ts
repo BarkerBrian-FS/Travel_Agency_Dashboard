@@ -26,6 +26,27 @@ export function parseMarkdownToJson(markdownText: string): unknown | null {
   return null;
 }
 
+export function parseMarkdown(text: string) {
+  try {
+    // Try parsing plain JSON first
+    return JSON.parse(text);
+  } catch {}
+
+  // Fall back to markdown
+  const match = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+
+  if (match) {
+    try {
+      return JSON.parse(match[1].trim());
+    } catch (error) {
+      console.error("Error parsing markdown JSON:", error);
+    }
+  }
+
+  console.error("Unable to parse JSON.");
+  return null;
+}
+
 export function parseTripData(jsonString: string): Trip | null {
   try {
     const data: Trip = JSON.parse(jsonString);
@@ -43,7 +64,7 @@ export function getFirstWord(input: string = ""): string {
 
 export const calculateTrendPercentage = (
   countOfThisMonth: number,
-  countOfLastMonth: number
+  countOfLastMonth: number,
 ): TrendResult => {
   if (countOfLastMonth === 0) {
     return countOfThisMonth === 0

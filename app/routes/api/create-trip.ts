@@ -1,6 +1,6 @@
 import { data, type ActionFunctionArgs } from "react-router";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { parseMarkdownToJson } from "../../../lib/utils";
+import { parseMarkdown, parseMarkdownToJson } from "../../../lib/utils";
 import { appwriteConfig, database } from "~/appwrite/client";
 import { ID } from "appwrite";
 
@@ -67,11 +67,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }`;
     const textResult = await genAI
       .getGenerativeModel({
-        model: "gemini-2.0-flash",
+        model: "gemini-3.5-flash-lite",
       })
       .generateContent([prompt]);
 
-    const trip = parseMarkdownToJson(textResult.response.text());
+    const text = textResult.response.text();
+
+    console.log(text);
+
+    const trip = parseMarkdown(textResult.response.text());
 
     const imageResponse = await fetch(
       `https://api.unsplash.com/search/photos?query=${country} ${interests} ${travelStyle}&client_id=${unsplashApiKey}`,
